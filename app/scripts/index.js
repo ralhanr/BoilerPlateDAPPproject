@@ -11,37 +11,32 @@ import StarNotaryArtifact from '../../build/contracts/StarNotary.json'
 // StarNotary is our usable abstraction, which we'll use through the code below.
 const StarNotary = contract(StarNotaryArtifact)
 
+// The following code is simple to show off interacting with your contracts.
+// As your needs grow you will likely need to change its form and structure.
+// For application bootstrapping, check out window.addEventListener below.
 let accounts
 let account
 
-const starName = async () => {
+const createStar = async () => {
   const instance = await StarNotary.deployed();
-  const response = await instance.starName.call();
-  const owner = document.getElementById("name");
-      owner.innerHTML = response;
-}
-
-const starOwner = async () => {
-  const instance = await StarNotary.deployed();
-  const response = await instance.starOwner.call();
-  const owner = document.getElementById("owner");
-      owner.innerHTML = response;
-}
-
-const claimStar = async () => {
-  const instance = await StarNotary.deployed();
-  await instance.claimStar({from: account});
-  const response = await instance.starOwner.call();
+  const name = document.getElementById("starName").value;
+  const id = document.getElementById("starId").value;
+  await instance.createStar(name, id, {from: account});
   App.setStatus("New Star Owner is " + account + ".");
 }
 
-// Defining an object App
+// Add a function lookUp to Lookup a star by ID using tokenIdToStarInfo()
+
+//
+
 const App = {
   start: function () {
+    const self = this
 
+    // Bootstrap the MetaCoin abstraction for Use.
     StarNotary.setProvider(web3.currentProvider)
 
-    // Confirm that we have available accounts
+    // Get the initial account balance so it can be displayed.
     web3.eth.getAccounts(function (err, accs) {
       if (err != null) {
         alert('There was an error fetching your accounts.')
@@ -64,16 +59,8 @@ const App = {
     status.innerHTML = message
   },
 
-  starName: function () {
-    starName();
-  },
-
-  starOwner: function () {
-    starOwner();
-  },
-
-  claimStar: function () {
-    claimStar();
+  createStar: function () {
+    createStar();
   },
 
 }
