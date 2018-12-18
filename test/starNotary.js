@@ -1,4 +1,4 @@
-import 'babel-polyfill';
+//import 'babel-polyfill';
 const StarNotary = artifacts.require('./starNotary.sol')
 
 let instance;
